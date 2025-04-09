@@ -1,14 +1,14 @@
 name: "NGINX NIC/NAP-V5 Deployment"
 on:
   push:
-    branches: gcp-apply-nic-napv5
+    branches: apply-nic-napv5
 env:
   CLOUD_PROVIDER: "GCP"
 ########### To be set by the user ###########
 #  TF_VAR_GCP_BUCKET_NAME: ${{ secrets.TF_VAR_GCP_BUCKET_NAME }}
 #  TF_VAR_GCP_REGION: ${{ secrets.TF_VAR_GCP_REGION }}
 #  TF_VAR_project_prefix: ${{ secrets.TF_VAR_PROJECT_PREFIX }}
-  TF_VAR_GCP_BUCKET_NAME: "hk-nginx-bucket"
+  TF_VAR_GCP_BUCKET_NAME: "hk-bucket"
   TF_VAR_GCP_REGION: "asia-south1"
   TF_VAR_project_prefix: "hk-new-wf"
 ############################################
