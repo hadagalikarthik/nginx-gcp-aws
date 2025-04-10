@@ -40,7 +40,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: env.bucket-working-directory
+        working-directory: ${{env.bucket-working-directory}}
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
