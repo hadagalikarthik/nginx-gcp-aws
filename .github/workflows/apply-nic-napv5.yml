@@ -71,6 +71,7 @@ jobs:
           CURRENT_DIR=$(pwd)  # Capture the current working directory
           FULL_PATH="${CURRENT_DIR}/${WORKING_DIRECTORY}"
           echo "Working directory is $FULL_PATH"
+          echo "FULL_PATH=$FULL_PATH" >> $GITHUB_ENV
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
