@@ -60,10 +60,10 @@ jobs:
         with:
           credentials_json: ${{ secrets.TF_VAR_GOOGLE_CREDENTIALS }}
 
-      - name: Echo working directory
-        run: |
-          echo "Current working directory is:"
-          pwd
+#      - name: Echo working directory
+#        run: |
+#          echo "Current working directory is:"
+#          pwd
 
       - name: Set working directory dynamically
         run: |
@@ -81,6 +81,7 @@ jobs:
         run: terraform init
 
       - name: Terraform Plan
+        working-directory: ${{ env.FULL_PATH }}
         run: terraform plan -no-color -input=false -out=tfplan
 
       - name: Check for Changes
@@ -92,7 +93,8 @@ jobs:
             echo "has_changes=true" >> $GITHUB_OUTPUT
           fi
 
-#      - name: Terraform Apply
-#        if: github.event_name == 'push' && github.ref == 'refs/heads/apply-nic-napv5' && steps.check_changes.outputs.has_changes == 'true'
-#        run: terraform apply -auto-approve tfplan
+      - name: Terraform Apply
+        working-directory: ${{ env.FULL_PATH }}
+        if: github.event_name == 'push' && github.ref == 'refs/heads/apply-nic-napv5' && steps.check_changes.outputs.has_changes == 'true'
+        run: terraform apply -auto-approve tfplan
 
