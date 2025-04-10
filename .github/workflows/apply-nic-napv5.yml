@@ -3,16 +3,18 @@ on:
   push:
     branches: apply-nic-napv5
 env:
-  CLOUD_PROVIDER: "AWS"
+  CLOUD_PROVIDER: "GCP"
 ########### To be set by the user ###########
 #  TF_VAR_GCP_BUCKET_NAME: ${{ secrets.TF_VAR_GCP_BUCKET_NAME }}
 #  TF_VAR_GCP_REGION: ${{ secrets.TF_VAR_GCP_REGION }}
 #  TF_VAR_project_prefix: ${{ secrets.TF_VAR_PROJECT_PREFIX }}
-  TF_VAR_GCP_BUCKET_NAME: "hk-bucket-tf"
-  TF_VAR_GCP_REGION: "asia-south1"
+#  TF_VAR_GCP_BUCKET_NAME: "hk-bucket-tf"
+#  TF_VAR_GCP_REGION: "asia-south1"
+  TF_VAR_GCP_BUCKET_NAME: ${{ vars.TF_VAR_BUCKET_NAME }}
+  TF_VAR_GCP_REGION: ${{ vars.TF_VAR_GCP_REGION }}
   TF_VAR_AWS_S3_BUCKET_NAME: "hk-bucket-tf"
   TF_VAR_AWS_REGION: "ap-south-1"
-  TF_VAR_project_prefix: "hk-new-wf"
+  TF_VAR_project_prefix: ${{ vars.TF_VAR_PROJECT_PREFIX }}
   TF_VAR_GCP_PROJECT_ID: ${{ secrets.TF_VAR_GCP_PROJECT_ID }}
   TF_VAR_GOOGLE_CREDENTIALS: ${{ secrets.TF_VAR_GOOGLE_CREDENTIALS }}
   WORKSPACE_PATH: "./GCP/nap"
