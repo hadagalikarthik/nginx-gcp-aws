@@ -13,7 +13,6 @@ env:
   TF_VAR_AWS_S3_BUCKET_NAME: "hk-bucket-tf"
   TF_VAR_AWS_REGION: "ap-south-1"
   TF_VAR_project_prefix: "hk-new-wf"
-############################################
   TF_VAR_GCP_PROJECT_ID: ${{ secrets.TF_VAR_GCP_PROJECT_ID }}
   TF_VAR_GOOGLE_CREDENTIALS: ${{ secrets.TF_VAR_GOOGLE_CREDENTIALS }}
   WORKSPACE_PATH: "./GCP/nap"
