@@ -31,12 +31,12 @@ env:
 
 jobs:
   terraform_bootstrap:
-    strategy:
-      matrix:
-        cloud_provider: [ GCP, AWS ]  # Define cloud providers as matrix values
-    name: "Bootstrap Terraform for ${{ matrix.cloud_provider }}"  # Dynamically set job name based on cloud_provider matrix value
+#    strategy:
+#      matrix:
+#        cloud_provider: [ GCP, AWS ]  # Define cloud providers as matrix values
+#    name: "Bootstrap Terraform for ${{ matrix.cloud_provider }}"  # Dynamically set job name based on cloud_provider matrix value
 #    if: var.CLOUD_PROVIDER == "GCP"
-#    name: "GCP Bucket"
+    name: "GCP Bucket"
     runs-on: ubuntu-latest
     defaults:
       run:
