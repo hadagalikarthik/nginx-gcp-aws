@@ -70,9 +70,14 @@ jobs:
         uses: hashicorp/setup-terraform@v3
 
       - name: Initialize Terraform
+#        working-directory: ${{ env.WORKING_DIRECTORY }}
+#        echo "Working directory is $working-directory"
+        run: terraform init
+
+      - name: Echo working directory
+        run: |
           echo "Current working directory is:"
           pwd
-        run: terraform init
 
       - name: Terraform Plan
         run: terraform plan -no-color -input=false -out=tfplan
@@ -86,7 +91,7 @@ jobs:
             echo "has_changes=true" >> $GITHUB_OUTPUT
           fi
 
-      - name: Terraform Apply
-        if: github.event_name == 'push' && github.ref == 'refs/heads/apply-nic-napv5' && steps.check_changes.outputs.has_changes == 'true'
-        run: terraform apply -auto-approve tfplan
+#      - name: Terraform Apply
+#        if: github.event_name == 'push' && github.ref == 'refs/heads/apply-nic-napv5' && steps.check_changes.outputs.has_changes == 'true'
+#        run: terraform apply -auto-approve tfplan
 
