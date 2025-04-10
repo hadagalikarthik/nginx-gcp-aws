@@ -60,9 +60,14 @@ jobs:
         with:
           credentials_json: ${{ secrets.TF_VAR_GOOGLE_CREDENTIALS }}
 
+      - name: Echo working directory
+        run: |
+          echo "Current working directory is:"
+          pwd
+
       - name: Set working directory dynamically
         run: |
-          export WORKING_DIRECTORY=./${{ env.CLOUD_PROVIDER }}/bucket
+          export WORKING_DIRECTORY=${{ env.CLOUD_PROVIDER }}/bucket
           CURRENT_DIR=$(pwd)  # Capture the current working directory
           FULL_PATH="${CURRENT_DIR}/${WORKING_DIRECTORY}"
           echo "Working directory is $FULL_PATH"
@@ -73,11 +78,6 @@ jobs:
       - name: Initialize Terraform
         working-directory: ${{ env.FULL_PATH }}
         run: terraform init
-
-      - name: Echo working directory
-        run: |
-          echo "Current working directory is:"
-          pwd
 
       - name: Terraform Plan
         run: terraform plan -no-color -input=false -out=tfplan
