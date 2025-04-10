@@ -35,7 +35,7 @@ jobs:
 #      matrix:
 #        cloud_provider: [ GCP, AWS ]  # Define cloud providers as matrix values
 #    name: "Bootstrap Terraform for ${{ matrix.cloud_provider }}"  # Dynamically set job name based on cloud_provider matrix value
-#    if: var.CLOUD_PROVIDER == "GCP"
+#    if: env.CLOUD_PROVIDER == "GCP"
     name: "GCP Bucket"
     runs-on: ubuntu-latest
     defaults:
@@ -46,7 +46,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Configure AWS Credentials
-        if: var.CLOUD_PROVIDER == "AWS"
+        if: env.CLOUD_PROVIDER == "AWS"
         uses: aws-actions/configure-aws-credentials@v3
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
@@ -55,7 +55,7 @@ jobs:
           aws-region: ${{ secrets.TF_VAR_AWS_REGION }}
 
       - name: Set up Google Cloud Authentication
-        if: var.CLOUD_PROVIDER == "GCP"
+        if: env.CLOUD_PROVIDER == "GCP"
         uses: google-github-actions/auth@v2
         with:
           credentials_json: ${{ secrets.TF_VAR_GOOGLE_CREDENTIALS }}
@@ -83,7 +83,7 @@ jobs:
         run: terraform apply -auto-approve tfplan
 
   terraform_infra:
-#    if: var.CLOUD_PROVIDER == "GCP"
+#    if: env.CLOUD_PROVIDER == "GCP"
     name: "GCP Infra"
     runs-on: ubuntu-latest
     needs:  terraform_bootstrap
@@ -98,7 +98,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Configure AWS Credentials
-        if: var.CLOUD_PROVIDER == "AWS"
+        if: env.CLOUD_PROVIDER == "AWS"
         uses: aws-actions/configure-aws-credentials@v3
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
@@ -107,7 +107,7 @@ jobs:
           aws-region: ${{ secrets.TF_VAR_AWS_REGION }}
 
       - name: Set up Google Cloud Authentication
-        if: var.CLOUD_PROVIDER == "GCP"
+        if: env.CLOUD_PROVIDER == "GCP"
         uses: google-github-actions/auth@v2
         with:
           credentials_json: ${{ secrets.TF_VAR_GOOGLE_CREDENTIALS }}
@@ -116,26 +116,26 @@ jobs:
         uses: hashicorp/setup-terraform@v3
 #
 #      - name: Initialize Terraform (GCS Backend)
-#        if: var.CLOUD_PROVIDER == "GCP"
+#        if: env.CLOUD_PROVIDER == "GCP"
 #        run: |
 #          terraform init \
 #            -backend-config="bucket=$TF_VAR_GCP_BUCKET_NAME"
 #
 #      - name: Terraform Init
-#        if: var.CLOUD_PROVIDER == "AWS"
+#        if: env.CLOUD_PROVIDER == "AWS"
 #        run: |
 #          terraform init \
 #            -backend-config="bucket=${{ secrets.TF_VAR_AWS_S3_BUCKET_NAME }}" \
 #            -backend-config="region=${{ secrets.TF_VAR_AWS_REGION }}"
       - name: Initialize Terraform with GCP Backend
-        if: var.CLOUD_PROVIDER == "GCP"
+        if: env.CLOUD_PROVIDER == "GCP"
         run: |
           terraform init \
             -backend-config="bucket=$TF_VAR_GCP_BUCKET_NAME" \
             -backend-config="prefix=infra/terraform.tfstate"
 
       - name: Initialize Terraform with AWS Backend
-        if: var.CLOUD_PROVIDER == "AWS"
+        if: env.CLOUD_PROVIDER == "AWS"
         run: |
           terraform init \
             -backend-config="key=infra/terraform.tfstate" \
@@ -162,7 +162,7 @@ jobs:
         run: terraform apply -auto-approve tfplan
 
   terraform_gke:
-#    if: var.CLOUD_PROVIDER == "GCP"
+#    if: env.CLOUD_PROVIDER == "GCP"
     name: "GCP GKE"
     runs-on: ubuntu-latest
     needs: terraform_infra
@@ -174,7 +174,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Configure AWS Credentials
-        if: var.CLOUD_PROVIDER == "AWS"
+        if: env.CLOUD_PROVIDER == "AWS"
         uses: aws-actions/configure-aws-credentials@v3
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
@@ -183,7 +183,7 @@ jobs:
           aws-region: ${{ secrets.TF_VAR_AWS_REGION }}
 
       - name: Set up Google Cloud Authentication
-        if: var.CLOUD_PROVIDER == "GCP"
+        if: env.CLOUD_PROVIDER == "GCP"
         uses: google-github-actions/auth@v2
         with:
           credentials_json: ${{ secrets.TF_VAR_GOOGLE_CREDENTIALS }}
@@ -192,26 +192,26 @@ jobs:
         uses: hashicorp/setup-terraform@v3
 
 #      - name: Initialize Terraform (GCS Backend)
-#        if: var.CLOUD_PROVIDER == "GCP"
+#        if: env.CLOUD_PROVIDER == "GCP"
 #        run: |
 #          terraform init \
 #            -backend-config="bucket=$TF_VAR_GCP_BUCKET_NAME"
 #
 #      - name: Terraform Init
-#        if: var.CLOUD_PROVIDER == "AWS"
+#        if: env.CLOUD_PROVIDER == "AWS"
 #        run: |
 #          terraform init \
 #            -backend-config="bucket=${{ secrets.TF_VAR_AWS_S3_BUCKET_NAME }}" \
 #            -backend-config="region=${{ secrets.TF_VAR_AWS_REGION }}"
       - name: Initialize Terraform with GCP Backend
-        if: var.CLOUD_PROVIDER == "GCP"
+        if: env.CLOUD_PROVIDER == "GCP"
         run: |
           terraform init \
             -backend-config="bucket=$TF_VAR_GCP_BUCKET_NAME" \
             -backend-config="prefix=cluster/terraform.tfstate"
 
       - name: Initialize Terraform with AWS Backend
-        if: var.CLOUD_PROVIDER == "AWS"
+        if: env.CLOUD_PROVIDER == "AWS"
         run: |
           terraform init \
             -backend-config="key=cluster/terraform.tfstate" \
@@ -249,7 +249,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Configure AWS Credentials
-        if: var.CLOUD_PROVIDER == "AWS"
+        if: env.CLOUD_PROVIDER == "AWS"
         uses: aws-actions/configure-aws-credentials@v3
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
@@ -258,7 +258,7 @@ jobs:
           aws-region: ${{ secrets.TF_VAR_AWS_REGION }}
 
       - name: Set up Google Cloud Authentication
-        if: var.CLOUD_PROVIDER == "GCP"
+        if: env.CLOUD_PROVIDER == "GCP"
         uses: google-github-actions/auth@v2
         with:
           credentials_json: ${{ secrets.TF_VAR_GOOGLE_CREDENTIALS }}
@@ -267,26 +267,26 @@ jobs:
         uses: hashicorp/setup-terraform@v3
 
 #      - name: Initialize Terraform (GCS Backend)
-#        if: var.CLOUD_PROVIDER == "GCP"
+#        if: env.CLOUD_PROVIDER == "GCP"
 #        run: |
 #          terraform init \
 #            -backend-config="bucket=$TF_VAR_GCP_BUCKET_NAME"
 #
 #      - name: Terraform Init
-#        if: var.CLOUD_PROVIDER == "AWS"
+#        if: env.CLOUD_PROVIDER == "AWS"
 #        run: |
 #          terraform init \
 #            -backend-config="bucket=${{ secrets.TF_VAR_AWS_S3_BUCKET_NAME }}" \
 #            -backend-config="region=${{ secrets.TF_VAR_AWS_REGION }}"
       - name: Initialize Terraform with GCP Backend
-        if: var.CLOUD_PROVIDER == "GCP"
+        if: env.CLOUD_PROVIDER == "GCP"
         run: |
           terraform init \
             -backend-config="bucket=$TF_VAR_GCP_BUCKET_NAME" \
             -backend-config="prefix=nap/terraform.tfstate"
 
       - name: Initialize Terraform with AWS Backend
-        if: var.CLOUD_PROVIDER == "AWS"
+        if: env.CLOUD_PROVIDER == "AWS"
         run: |
           terraform init \
             -backend-config="key=nap/terraform.tfstate" \
@@ -328,7 +328,7 @@ jobs:
       uses: actions/checkout@v4
 
     - name: Configure AWS Credentials
-      if: var.CLOUD_PROVIDER == "AWS"
+      if: env.CLOUD_PROVIDER == "AWS"
       uses: aws-actions/configure-aws-credentials@v3
       with:
         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
@@ -337,7 +337,7 @@ jobs:
         aws-region: ${{ secrets.TF_VAR_AWS_REGION }}
 
     - name: Set up Google Cloud Authentication
-      if: var.CLOUD_PROVIDER == "GCP"
+      if: env.CLOUD_PROVIDER == "GCP"
       uses: google-github-actions/auth@v2
       with:
         credentials_json: ${{ secrets.TF_VAR_GOOGLE_CREDENTIALS }}
@@ -346,14 +346,14 @@ jobs:
       uses: hashicorp/setup-terraform@v3
 
 #    - name: Terraform Init (GKE)
-#      if: var.CLOUD_PROVIDER == "GCP"
+#      if: env.CLOUD_PROVIDER == "GCP"
 #      run: |
 #        terraform init \
 #          -backend-config="bucket=$TF_VAR_GCP_BUCKET_NAME"
 #      working-directory: ./gcp/cluster
 #
 #    - name: Terraform Init (EKS)
-#      if: var.CLOUD_PROVIDER == "AWS"
+#      if: env.CLOUD_PROVIDER == "AWS"
 #      run: |
 #        terraform init \
 #          -backend-config="bucket=${{ secrets.TF_VAR_AWS_S3_BUCKET_NAME }}" \
@@ -361,7 +361,7 @@ jobs:
 #      working-directory: ./cluster
 
     - name: Initialize Terraform with GCP Backend
-      if: var.CLOUD_PROVIDER == "GCP"
+      if: env.CLOUD_PROVIDER == "GCP"
       run: |
         terraform init \
           -backend-config="bucket=$TF_VAR_GCP_BUCKET_NAME" \
@@ -369,7 +369,7 @@ jobs:
       working-directory: ./gcp/cluster
 
     - name: Initialize Terraform with AWS Backend
-      if: var.CLOUD_PROVIDER == "AWS"
+      if: env.CLOUD_PROVIDER == "AWS"
       run: |
         terraform init \
           -backend-config="key=nap/terraform.tfstate" \
@@ -378,41 +378,41 @@ jobs:
       working-directory: ./aws/cluster
 
     - name: Print GKE Terraform Outputs
-      if: var.CLOUD_PROVIDER == "GCP"
+      if: env.CLOUD_PROVIDER == "GCP"
       run: terraform output
       working-directory: ./gcp/cluster
 
     - name: Print EKS Terraform Outputs
-      if: var.CLOUD_PROVIDER == "AWS"
+      if: env.CLOUD_PROVIDER == "AWS"
       run: terraform output
       working-directory: ./aws/cluster
 
     - name: Fetch EKS Cluster Name and Region
-      if: var.CLOUD_PROVIDER == "AWS"
+      if: env.CLOUD_PROVIDER == "AWS"
       run: |
         echo "EKS_CLUSTER_NAME=$(terraform output -raw cluster_name)" >> $GITHUB_ENV
         echo "AWS_REGION=$AWS_REGION" >> $GITHUB_ENV
       working-directory: ./aws/cluster
 
     - name: Configure kubectl for EKS
-      if: var.CLOUD_PROVIDER == "AWS"
+      if: env.CLOUD_PROVIDER == "AWS"
       run: |
         aws eks update-kubeconfig --name $EKS_CLUSTER_NAME --region $AWS_REGION
 
     - name: Authenticate to Google Cloud
-      if: var.CLOUD_PROVIDER == "GCP"
+      if: env.CLOUD_PROVIDER == "GCP"
       run: |
         echo "$TF_VAR_GOOGLE_CREDENTIALS" | gcloud auth activate-service-account --key-file=-
 
     - name: Fetch GKE Cluster Name and Region
-      if: var.CLOUD_PROVIDER == "GCP"
+      if: env.CLOUD_PROVIDER == "GCP"
       run: |
         echo "GKE_CLUSTER_NAME=$data.terraform_remote_state.gke.outputs.kubernetes_cluster_name" >> $GITHUB_ENV
         echo "GCP_REGION=$TF_VAR_GCP_REGION" >> $GITHUB_ENV
       working-directory: ./gcp/cluster
 
     - name: Install gke-gcloud-auth-plugin
-      if: var.CLOUD_PROVIDER == "GCP"
+      if: env.CLOUD_PROVIDER == "GCP"
       run: |
         sudo apt-get update
         sudo apt-get install apt-transport-https ca-certificates gnupg curl
@@ -422,7 +422,7 @@ jobs:
         sudo apt-get install google-cloud-cli-gke-gcloud-auth-plugin
 
     - name: Configure kubectl for GKE
-      if: var.CLOUD_PROVIDER == "GCP"
+      if: env.CLOUD_PROVIDER == "GCP"
       run: |
         gcloud container clusters get-credentials ${{ env.TF_VAR_project_prefix }}-gke --region $GCP_REGION --project $TF_VAR_GCP_PROJECT_ID
 
@@ -499,26 +499,26 @@ jobs:
         kubectl cp ${{ github.workspace }}/policy/compiled_policy.tgz $NGINX_POD:/etc/app_protect/bundles/compiled_policy.tgz -n nginx-ingress
 
 #    - name: Initialize Terraform (GCS Backend)
-#      if: var.CLOUD_PROVIDER == "GCP"
+#      if: env.CLOUD_PROVIDER == "GCP"
 #      run: |
 #        terraform init \
 #          -backend-config="bucket=$TF_VAR_GCP_BUCKET_NAME"
 #
 #    - name: Terraform Init
-#      if: var.CLOUD_PROVIDER == "AWS"
+#      if: env.CLOUD_PROVIDER == "AWS"
 #      run: |
 #        terraform init \
 #          -backend-config="bucket=${{ secrets.TF_VAR_AWS_S3_BUCKET_NAME }}" \
 #          -backend-config="region=${{ secrets.TF_VAR_AWS_REGION }}"
     - name: Initialize Terraform with GCP Backend
-      if: var.CLOUD_PROVIDER == "GCP"
+      if: env.CLOUD_PROVIDER == "GCP"
       run: |
         terraform init \
           -backend-config="bucket=$TF_VAR_GCP_BUCKET_NAME" \
           -backend-config="prefix=policy/terraform.tfstate"
 
     - name: Initialize Terraform with AWS Backend
-      if: var.CLOUD_PROVIDER == "AWS"
+      if: env.CLOUD_PROVIDER == "AWS"
       run: |
         terraform init \
           -backend-config="key=policy/terraform.tfstate" \
@@ -555,7 +555,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Configure AWS Credentials
-        if: var.CLOUD_PROVIDER == "AWS"
+        if: env.CLOUD_PROVIDER == "AWS"
         uses: aws-actions/configure-aws-credentials@v3
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
@@ -564,7 +564,7 @@ jobs:
           aws-region: ${{ secrets.TF_VAR_AWS_REGION }}
 
       - name: Set up Google Cloud Authentication
-        if: var.CLOUD_PROVIDER == "GCP"
+        if: env.CLOUD_PROVIDER == "GCP"
         uses: google-github-actions/auth@v2
         with:
           credentials_json: ${{ secrets.TF_VAR_GOOGLE_CREDENTIALS }}
@@ -583,14 +583,14 @@ jobs:
 #          terraform init \
 #            -backend-config="bucket=$TF_VAR_GCP_BUCKET_NAME"
       - name: Initialize Terraform with GCP Backend
-        if: var.CLOUD_PROVIDER == "GCP"
+        if: env.CLOUD_PROVIDER == "GCP"
         run: |
           terraform init \
             -backend-config="bucket=$TF_VAR_GCP_BUCKET_NAME" \
             -backend-config="prefix=nap/terraform.tfstate"
 
       - name: Initialize Terraform with AWS Backend
-        if: var.CLOUD_PROVIDER == "AWS"
+        if: env.CLOUD_PROVIDER == "AWS"
         run: |
           terraform init \
             -backend-config="key=nap/terraform.tfstate" \
