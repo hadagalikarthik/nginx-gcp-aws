@@ -1,4 +1,4 @@
-data "terraform_remote_state" "infra" {
+data "terraform_remote_state" "aws-infra" {
   count = var.CLOUD_PROVIDER == "AWS" ? 1 : 0  # Only create this block if CLOUD_PROVIDER is AWS
   backend = "s3"
   config = {
@@ -24,14 +24,15 @@ data "aws_eks_cluster_auth" "auth" {
   name = data.terraform_remote_state.eks.outputs.cluster_name
 }
 
-data "kubernetes_service_v1" "nginx-service" {
+data "kubernetes_service_v1" "aws-nginx-service" {
+  count    = var.CLOUD_PROVIDER == "AWS" ? 1 : 0
   metadata {
-    name      = try(format("%s-%s-controller", helm_release.nginx-plus-ingress.name, helm_release.nginx-plus-ingress.chart))
-    namespace = try(helm_release.nginx-plus-ingress.namespace)
+    name      = try(format("%s-%s-controller", helm_release.aws-nginx-plus-ingress.name, helm_release.aws-nginx-plus-ingress.chart))
+    namespace = try(helm_release.aws-nginx-plus-ingress.namespace)
   }
 }
 
-data "terraform_remote_state" "infra" {
+data "terraform_remote_state" "gcp-infra" {
   count = var.CLOUD_PROVIDER == "GCP" ? 1 : 0  # Only create this block if CLOUD_PROVIDER is GCP
   backend = "gcs"
   config = {
@@ -47,5 +48,13 @@ data "terraform_remote_state" "gke" {
   config = {
     bucket =  var.GCP_BUCKET_NAME        # Your S3 bucket name
     prefix    = "gke/terraform.tfstate" # Path to EKS state file
+  }
+}
+
+data "kubernetes_service_v1" "gcp-nginx-service" {
+  count    = var.CLOUD_PROVIDER == "GCP" ? 1 : 0
+  metadata {
+    name      = try(format("%s-%s-controller", helm_release.gcp-nginx-plus-ingress.name, helm_release.gcp-nginx-plus-ingress.chart))
+    namespace = try(helm_release.gcp-nginx-plus-ingress.namespace)
   }
 }
