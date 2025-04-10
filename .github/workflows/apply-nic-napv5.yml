@@ -252,9 +252,8 @@ jobs:
 
       - name: Set working directory dynamically
         run: |
-          export WORKING_DIRECTORY=${{ env.CLOUD_PROVIDER }}/nap
           CURRENT_DIR=$(pwd)  # Capture the current working directory
-          FULL_PATH="${CURRENT_DIR}/${WORKING_DIRECTORY}"
+          FULL_PATH="${CURRENT_DIR}/nap"
           echo "Working directory is $FULL_PATH"
           echo "FULL_PATH=$FULL_PATH" >> $GITHUB_ENV
 
@@ -329,9 +328,8 @@ jobs:
 #
 #      - name: Set working directory dynamically
 #        run: |
-#          export WORKING_DIRECTORY=${{ env.CLOUD_PROVIDER }}/policy
 #          CURRENT_DIR=$(pwd)  # Capture the current working directory
-#          FULL_PATH="${CURRENT_DIR}/${WORKING_DIRECTORY}"
+#          FULL_PATH="${CURRENT_DIR}/nap"
 #          echo "Working directory is $FULL_PATH"
 #          echo "FULL_PATH=$FULL_PATH" >> $GITHUB_ENV
 #
@@ -563,9 +561,9 @@ jobs:
 #
 #      - name: Set working directory dynamically
 #        run: |
-#          export WORKING_DIRECTORY=${{ env.CLOUD_PROVIDER }}/arcadia
+#          #export WORKING_DIRECTORY=${{ env.CLOUD_PROVIDER }}/arcadia
 #          CURRENT_DIR=$(pwd)  # Capture the current working directory
-#          FULL_PATH="${CURRENT_DIR}/${WORKING_DIRECTORY}"
+#          FULL_PATH="${CURRENT_DIR}/arcadia"
 #          echo "Working directory is $FULL_PATH"
 #          echo "FULL_PATH=$FULL_PATH" >> $GITHUB_ENV
 #
