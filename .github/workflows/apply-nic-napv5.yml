@@ -62,7 +62,7 @@ jobs:
 
       - name: Set working directory dynamically
         run: |
-          export WORKING_DIRECTORY=./${{ env.CLOUD_PROVIDER }}/bucket
+          export WORKING_DIRECTORY=./GCP/bucket
           echo "Working directory is $WORKING_DIRECTORY"
 
       - name: Setup Terraform
