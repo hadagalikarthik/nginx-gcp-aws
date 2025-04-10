@@ -40,7 +40,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: bucket-working-directory
+        working-directory: env.bucket-working-directory
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -91,7 +91,7 @@ jobs:
       contents: read
     defaults:
       run:
-        working-directory: infra-working-directory
+        working-directory: env.infra-working-directory
 
     steps:
       - name: Checkout code
@@ -168,7 +168,7 @@ jobs:
     needs: terraform_infra
     defaults:
       run:
-        working-directory: cluster-working-directory
+        working-directory: env.cluster-working-directory
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -243,7 +243,7 @@ jobs:
     needs: terraform_gke
     defaults:
       run:
-        working-directory: nap-working-directory
+        working-directory: env.nap-working-directory
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -321,7 +321,7 @@ jobs:
     needs: terraform_nap
     defaults:
       run:
-       working-directory: policy-working-directory
+       working-directory: env.policy-working-directory
 
     steps:
     - name: Checkout
@@ -549,7 +549,7 @@ jobs:
     needs: terraform_policy
     defaults:
       run:
-        working-directory: arcadia-working-directory
+        working-directory: env.arcadia-working-directory
     steps:
       - name: Checkout
         uses: actions/checkout@v4
