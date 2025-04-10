@@ -1,5 +1,5 @@
 terraform {
   backend "gcs" {
-    prefix  = "gke/terraform.tfstate"
+    prefix  = "cluster/terraform.tfstate"
   }
 }
