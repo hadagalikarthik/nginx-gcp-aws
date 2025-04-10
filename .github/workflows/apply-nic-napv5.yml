@@ -113,6 +113,15 @@ jobs:
         - name: Setup Terraform
           uses: hashicorp/setup-terraform@v3
 
+        - name: Write backend config
+          run: |
+            pwd
+            if [[ "$CLOUD_PROVIDER" == "AWS" ]]; then
+              echo 'terraform { backend "s3" {} }' > backend.tf
+            else
+              echo 'terraform { backend "gcs" {} }' > backend.tf
+            fi
+
         - name: Initialize Terraform with GCP Backend
           if: env.CLOUD_PROVIDER == 'GCP'
           working-directory: ${{ env.FULL_PATH }}
