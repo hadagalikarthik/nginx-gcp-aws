@@ -38,9 +38,9 @@ jobs:
 #    if: env.CLOUD_PROVIDER == 'GCP'
     name: "GCP Bucket"
     runs-on: ubuntu-latest
-#    defaults:
-#      run:
-#        working-directory: ./GCP/bucket
+    defaults:
+      run:
+        working-directory: ./GCP/bucket
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -60,17 +60,18 @@ jobs:
         with:
           credentials_json: ${{ secrets.TF_VAR_GOOGLE_CREDENTIALS }}
 
-      - name: Set working directory dynamically
-        run: |
-          export WORKING_DIRECTORY=./${{ env.CLOUD_PROVIDER }}/bucket
-          echo "Working directory is $WORKING_DIRECTORY"
-          echo "WORKING_DIRECTORY=$WORKING_DIRECTORY" >> $GITHUB_ENV
+#      - name: Set working directory dynamically
+#        run: |
+#          export WORKING_DIRECTORY=./${{ env.CLOUD_PROVIDER }}/bucket
+#          echo "Working directory is $WORKING_DIRECTORY"
+#          echo "WORKING_DIRECTORY=$WORKING_DIRECTORY" >> $GITHUB_ENV
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
 
       - name: Initialize Terraform
-        working-directory: ${{ env.WORKING_DIRECTORY }}
+          echo "Current working directory is:"
+          pwd
         run: terraform init
 
       - name: Terraform Plan
