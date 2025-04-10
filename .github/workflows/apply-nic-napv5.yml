@@ -121,7 +121,7 @@ jobs:
             aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
             aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
             aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
-            aws-region: ${{ secrets.TF_VAR_AWS_REGION }}
+            aws-region: ${{ env.TF_VAR_AWS_REGION }}
 
         - name: Set up Google Cloud Authentication
           if: env.CLOUD_PROVIDER == 'GCP'
@@ -167,7 +167,9 @@ jobs:
             terraform init \
               -backend-config="key=infra/terraform.tfstate" \
               -backend-config="dynamodb_table=terraform-lock-table" \
-              -backend-config="encrypt=true"
+              -backend-config="encrypt=true" \
+              -backend-config="bucket=$TF_VAR_AWS_S3_BUCKET_NAME" \
+              -backend-config="region=$TF_VAR_AWS_REGION"
 
         - name: Terraform Plan
           working-directory: ${{ env.FULL_PATH }}
