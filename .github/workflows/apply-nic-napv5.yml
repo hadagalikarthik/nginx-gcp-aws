@@ -53,7 +53,7 @@ jobs:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
-          aws-region: ${{ secrets.TF_VAR_AWS_REGION }}
+          aws-region: ${{ env.TF_VAR_AWS_REGION }}
 
       - name: Set up Google Cloud Authentication
         if: env.CLOUD_PROVIDER == 'GCP'
