@@ -14,7 +14,7 @@ env:
 ############################################
   TF_VAR_GCP_PROJECT_ID: ${{ secrets.TF_VAR_GCP_PROJECT_ID }}
   TF_VAR_GOOGLE_CREDENTIALS: ${{ secrets.TF_VAR_GOOGLE_CREDENTIALS }}
-  WORKSPACE_PATH: "./gcp/nap"
+  WORKSPACE_PATH: "./GCP/nap"
 #  bucket-working-directory: ./${{ secrets.CLOUD_PROVIDER | toLowerCase() }}/bucket
 #  infra-working-directory: ./${{ secrets.CLOUD_PROVIDER | toLowerCase() }}/infra
 #  cluster-working-directory: ./${{ secrets.CLOUD_PROVIDER | toLowerCase() }}/cluster
