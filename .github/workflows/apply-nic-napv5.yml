@@ -63,14 +63,17 @@ jobs:
       - name: Set working directory dynamically
         run: |
           export WORKING_DIRECTORY=./${{ env.CLOUD_PROVIDER }}/bucket
-          echo "Working directory is $WORKING_DIRECTORY"
+          CURRENT_DIR=$(pwd)  # Capture the current working directory
+          FULL_PATH="${CURRENT_DIR}/${WORKING_DIRECTORY}"
+#          export WORKING_DIRECTORY=./${{ env.CLOUD_PROVIDER }}/bucket
+          echo "Working directory is $FULL_PATH"
 #          echo "WORKING_DIRECTORY=$WORKING_DIRECTORY" >> $GITHUB_ENV
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
 
       - name: Initialize Terraform
-        working-directory: ${{ env.WORKING_DIRECTORY }}
+        working-directory: ${{ env.FULL_PATH }}
         run: terraform init
 
       - name: Echo working directory
