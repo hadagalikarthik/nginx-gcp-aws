@@ -168,7 +168,7 @@ jobs:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
-          aws-region: ${{ var.TF_VAR_AWS_REGION }}
+          aws-region: ${{ env.TF_VAR_AWS_REGION }}
 
       - name: Set up Google Cloud Authentication
         if: env.CLOUD_PROVIDER == 'GCP'
@@ -242,7 +242,7 @@ jobs:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
-          aws-region: ${{ var.TF_VAR_AWS_REGION }}
+          aws-region: ${{ env.TF_VAR_AWS_REGION }}
 
       - name: Set up Google Cloud Authentication
         if: env.CLOUD_PROVIDER == 'GCP'
@@ -319,7 +319,7 @@ jobs:
 #          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
 #          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 #          aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
-#          aws-region: ${{ var.TF_VAR_AWS_REGION }}
+#          aws-region: ${{ env.TF_VAR_AWS_REGION }}
 #
 #      - name: Set up Google Cloud Authentication
 #        if: env.CLOUD_PROVIDER == 'GCP'
@@ -350,7 +350,7 @@ jobs:
 #      #      run: |
 #      #        terraform init \
 #      #          -backend-config="bucket=${{ env.TF_VAR_AWS_S3_BUCKET_NAME }}" \
-#      #          -backend-config="region=${{ var.TF_VAR_AWS_REGION }}"
+#      #          -backend-config="region=${{ env.TF_VAR_AWS_REGION }}"
 #      #      working-directory: ./cluster
 #
 #      - name: Initialize Terraform with GCP Backend
@@ -502,7 +502,7 @@ jobs:
 #      #      run: |
 #      #        terraform init \
 #      #          -backend-config="bucket=${{ env.TF_VAR_AWS_S3_BUCKET_NAME }}" \
-#      #          -backend-config="region=${{ var.TF_VAR_AWS_REGION }}"
+#      #          -backend-config="region=${{ env.TF_VAR_AWS_REGION }}"
 #      - name: Initialize Terraform with GCP Backend
 #        if: env.CLOUD_PROVIDER == 'GCP'
 #        run: |
@@ -553,7 +553,7 @@ jobs:
 #          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
 #          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 #          aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
-#          aws-region: ${{ var.TF_VAR_AWS_REGION }}
+#          aws-region: ${{ env.TF_VAR_AWS_REGION }}
 #
 #      - name: Set up Google Cloud Authentication
 #        if: env.CLOUD_PROVIDER == 'GCP'
@@ -576,7 +576,7 @@ jobs:
 #      #        run: |
 #      #          terraform init \
 #      #            -backend-config="bucket=${{ env.TF_VAR_AWS_S3_BUCKET_NAME }}" \
-#      #            -backend-config="region=${{ var.TF_VAR_AWS_REGION }}"
+#      #            -backend-config="region=${{ env.TF_VAR_AWS_REGION }}"
 #      #
 #      #      - name: Initialize Terraform (GCS Backend)
 #      #        run: |
