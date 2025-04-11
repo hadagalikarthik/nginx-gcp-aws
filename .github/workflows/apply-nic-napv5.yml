@@ -115,8 +115,6 @@ jobs:
 
         - name: Write backend config
           run: |
-            pwd
-            ls
             if [[ "$CLOUD_PROVIDER" == "AWS" ]]; then
               cat <<EOF > AWS/infra/backend.tf
             terraform {
@@ -207,6 +205,24 @@ jobs:
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
 
+      - name: Write backend config
+        run: |
+          if [[ "$CLOUD_PROVIDER" == "AWS" ]]; then
+            cat <<EOF > AWS/cluster/backend.tf
+          terraform {
+            backend "s3" {
+            }
+          }
+          EOF
+          elif [[ "$CLOUD_PROVIDER" == "GCP" ]]; then
+            cat <<EOF > GCP/cluster/backend.tf
+          terraform {
+            backend "gcs" {
+            }
+          }
+          EOF
+          fi
+
       - name: Initialize Terraform with GCP Backend
         if: env.CLOUD_PROVIDER == 'GCP'
         working-directory: ${{ env.FULL_PATH }}
@@ -242,86 +258,104 @@ jobs:
             echo "has_changes=true" >> $GITHUB_OUTPUT
           fi
 
-#      - name: Terraform Apply
-#        working-directory: ${{ env.FULL_PATH }}
-#        if: github.event_name == 'push' && github.ref == 'refs/heads/apply-nic-napv5' && steps.check_changes.outputs.has_changes == 'true'
-#        run: terraform apply -auto-approve tfplan
-#
-#  terraform_nap:
-#    name: "NGINX App Protect"
-#    runs-on: ubuntu-latest
-#    needs: terraform_gke
-#    steps:
-#      - name: Checkout
-#        uses: actions/checkout@v4
-#
-#      - name: Configure AWS Credentials
-#        if: env.CLOUD_PROVIDER == 'AWS'
-#        uses: aws-actions/configure-aws-credentials@v3
-#        with:
-#          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-#          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-#          aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
-#          aws-region: ${{ env.TF_VAR_AWS_REGION }}
-#
-#      - name: Set up Google Cloud Authentication
-#        if: env.CLOUD_PROVIDER == 'GCP'
-#        uses: google-github-actions/auth@v2
-#        with:
-#          credentials_json: ${{ secrets.TF_VAR_GOOGLE_CREDENTIALS }}
-#
-#      - name: Set working directory dynamically
-#        run: |
-#          CURRENT_DIR=$(pwd)  # Capture the current working directory
-#          FULL_PATH="${CURRENT_DIR}/nap"
-#          echo "Working directory is $FULL_PATH"
-#          echo "FULL_PATH=$FULL_PATH" >> $GITHUB_ENV
-#
-#      - name: Setup Terraform
-#        uses: hashicorp/setup-terraform@v3
-#
-#      - name: Initialize Terraform with GCP Backend
-#        if: env.CLOUD_PROVIDER == 'GCP'
-#        working-directory: ${{ env.FULL_PATH }}
-#        run: |
-#          terraform init \
-#            -backend-config="bucket=$TF_VAR_GCP_BUCKET_NAME" \
-#            -backend-config="prefix=nap/terraform.tfstate"
-#
-#      - name: Initialize Terraform with AWS Backend
-#        if: env.CLOUD_PROVIDER == 'AWS'
-#        working-directory: ${{ env.FULL_PATH }}
-#        run: |
-#          terraform init \
-#            -backend-config="key=nap/terraform.tfstate" \
-#            -backend-config="dynamodb_table=terraform-lock-table" \
-#            -backend-config="encrypt=true" \
-#            -backend-config="bucket=$TF_VAR_AWS_S3_BUCKET_NAME" \
-#            -backend-config="region=$TF_VAR_AWS_REGION"
-#
-#      - name: Terraform Plan
-#        working-directory: ${{ env.FULL_PATH }}
-#        if: github.event_name == 'pull_request' || github.event_name == 'push'
-#        run: |
-#          terraform plan -no-color -input=false -lock=false -out=tfplan \
-#            -var="workspace_path=${{ env.WORKSPACE_PATH }}" \
-#            -var="nginx_jwt=${{ secrets.NGINX_JWT }}" \
-#            -var="nginx_pwd=none"
-#          terraform show -no-color tfplan > plan.txt
-#
-#      - name: Check Changes
-#        id: check_changes
-#        run: |
-#          if grep -q "No changes." plan.txt; then
-#            echo "has_changes=false" >> $GITHUB_OUTPUT
-#          else
-#            echo "has_changes=true" >> $GITHUB_OUTPUT
-#          fi
-#
-#      - name: Terraform Apply
-#        working-directory: ${{ env.FULL_PATH }}
-#        if: github.event_name == 'push' && github.ref == 'refs/heads/apply-nic-napv5' && steps.check_changes.outputs.has_changes == 'true'
-#        run: terraform apply -auto-approve -lock=false tfplan
+      - name: Terraform Apply
+        working-directory: ${{ env.FULL_PATH }}
+        if: github.event_name == 'push' && github.ref == 'refs/heads/apply-nic-napv5' && steps.check_changes.outputs.has_changes == 'true'
+        run: terraform apply -auto-approve tfplan
+
+  terraform_nap:
+    name: "NGINX App Protect"
+    runs-on: ubuntu-latest
+    needs: terraform_gke
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Configure AWS Credentials
+        if: env.CLOUD_PROVIDER == 'AWS'
+        uses: aws-actions/configure-aws-credentials@v3
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
+          aws-region: ${{ env.TF_VAR_AWS_REGION }}
+
+      - name: Set up Google Cloud Authentication
+        if: env.CLOUD_PROVIDER == 'GCP'
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: ${{ secrets.TF_VAR_GOOGLE_CREDENTIALS }}
+
+      - name: Set working directory dynamically
+        run: |
+          CURRENT_DIR=$(pwd)  # Capture the current working directory
+          FULL_PATH="${CURRENT_DIR}/nap"
+          echo "Working directory is $FULL_PATH"
+          echo "FULL_PATH=$FULL_PATH" >> $GITHUB_ENV
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+
+      - name: Write backend config
+        run: |
+          if [[ "$CLOUD_PROVIDER" == "AWS" ]]; then
+            cat <<EOF > nap/backend.tf
+          terraform {
+            backend "s3" {
+            }
+          }
+          EOF
+          elif [[ "$CLOUD_PROVIDER" == "GCP" ]]; then
+            cat <<EOF > nap/backend.tf
+          terraform {
+            backend "gcs" {
+            }
+          }
+          EOF
+          fi
+
+      - name: Initialize Terraform with GCP Backend
+        if: env.CLOUD_PROVIDER == 'GCP'
+        working-directory: ${{ env.FULL_PATH }}
+        run: |
+          terraform init \
+            -backend-config="bucket=$TF_VAR_GCP_BUCKET_NAME" \
+            -backend-config="prefix=nap/terraform.tfstate"
+
+      - name: Initialize Terraform with AWS Backend
+        if: env.CLOUD_PROVIDER == 'AWS'
+        working-directory: ${{ env.FULL_PATH }}
+        run: |
+          terraform init \
+            -backend-config="key=nap/terraform.tfstate" \
+            -backend-config="dynamodb_table=terraform-lock-table" \
+            -backend-config="encrypt=true" \
+            -backend-config="bucket=$TF_VAR_AWS_S3_BUCKET_NAME" \
+            -backend-config="region=$TF_VAR_AWS_REGION"
+
+      - name: Terraform Plan
+        working-directory: ${{ env.FULL_PATH }}
+        if: github.event_name == 'pull_request' || github.event_name == 'push'
+        run: |
+          terraform plan -no-color -input=false -lock=false -out=tfplan \
+            -var="workspace_path=${{ env.WORKSPACE_PATH }}" \
+            -var="nginx_jwt=${{ secrets.NGINX_JWT }}" \
+            -var="nginx_pwd=none"
+          terraform show -no-color tfplan > plan.txt
+
+      - name: Check Changes
+        id: check_changes
+        run: |
+          if grep -q "No changes." plan.txt; then
+            echo "has_changes=false" >> $GITHUB_OUTPUT
+          else
+            echo "has_changes=true" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Terraform Apply
+        working-directory: ${{ env.FULL_PATH }}
+        if: github.event_name == 'push' && github.ref == 'refs/heads/apply-nic-napv5' && steps.check_changes.outputs.has_changes == 'true'
+        run: terraform apply -auto-approve -lock=false tfplan
 
 #  terraform_policy:
 #    name: "NGINX Policy"
