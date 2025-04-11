@@ -1,5 +1,6 @@
 resource "kubernetes_secret" "aws-nginx_license" {
   count    = var.CLOUD_PROVIDER == "AWS" ? 1 : 0
+  provider = kubernetes.aws
   metadata {
     name      = "license-token"
     namespace = kubernetes_namespace.aws-nginx-ingress.metadata[0].name
@@ -14,6 +15,7 @@ resource "kubernetes_secret" "aws-nginx_license" {
 
 resource "kubernetes_secret" "aws-docker-registry" {
   count    = var.CLOUD_PROVIDER == "AWS" ? 1 : 0
+  provider = kubernetes.aws
   metadata {
     name      = "regcred"
     namespace = kubernetes_namespace.aws-nginx-ingress.metadata[0].name
@@ -36,6 +38,7 @@ resource "kubernetes_secret" "aws-docker-registry" {
 
 resource "kubernetes_secret" "gcp-nginx_license" {
   count    = var.CLOUD_PROVIDER == "GCP" ? 1 : 0
+  provider = kubernetes.gcp
   metadata {
     name      = "license-token"
     namespace = kubernetes_namespace.gcp-nginx-ingress.metadata[0].name
@@ -50,6 +53,7 @@ resource "kubernetes_secret" "gcp-nginx_license" {
 
 resource "kubernetes_secret" "gcp-docker-registry" {
   count    = var.CLOUD_PROVIDER == "GCP" ? 1 : 0
+  provider = kubernetes.gcp
   metadata {
     name      = "regcred"
     namespace = kubernetes_namespace.gcp-nginx-ingress.metadata[0].name

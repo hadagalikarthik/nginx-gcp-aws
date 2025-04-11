@@ -6,7 +6,7 @@ provider "kubernetes" {
   host                   = data.terraform_remote_state.eks.outputs.cluster_endpoint
   cluster_ca_certificate = base64decode(data.terraform_remote_state.eks.outputs.kubeconfig-certificate-authority-data)
   token                  = data.aws_eks_cluster_auth.auth.token
-  alias                  = "AWS"
+  alias                  = "aws"
   exec {
     api_version = "client.authentication.k8s.io/v1beta1"
     command     = "aws"
@@ -20,7 +20,7 @@ provider "kubernetes" {
 }
 
 provider "helm" {
-  alias                  = "AWS"
+  alias                  = "aws"
   kubernetes {
     host                   = data.terraform_remote_state.eks.outputs.cluster_endpoint
     cluster_ca_certificate = base64decode(data.terraform_remote_state.eks.outputs.kubeconfig-certificate-authority-data)
@@ -43,7 +43,7 @@ provider "kubectl" {
   cluster_ca_certificate = base64decode(data.terraform_remote_state.eks.outputs.kubeconfig-certificate-authority-data)
   token                  = data.aws_eks_cluster_auth.auth.token
   load_config_file       = false
-  alias                  = "AWS"
+  alias                  = "aws"
   exec {
     api_version = "client.authentication.k8s.io/v1beta1"
     command     = "aws"
@@ -64,7 +64,7 @@ provider "kubernetes" {
   host                   = local.host
   cluster_ca_certificate = base64decode(local.cluster_ca_certificate)
   token                  = local.cluster_token
-  alias                  = "GCP"
+  alias                  = "gcp"
   # Optional: Using exec for kubectl authentication
   exec {
     api_version = "client.authentication.k8s.io/v1beta1"
@@ -78,7 +78,7 @@ provider "kubernetes" {
 }
 
 provider "helm" {
-  alias                  = "GCP"
+  alias                  = "gcp"
   kubernetes {
     host                   = local.host
     cluster_ca_certificate = base64decode(local.cluster_ca_certificate)
@@ -101,7 +101,7 @@ provider "kubectl" {
     cluster_ca_certificate  = base64decode(local.cluster_ca_certificate)
     token                   = local.cluster_token
     load_config_file        = false
-    alias                  = "GCP"
+    alias                  = "gcp"
     exec {
     api_version = "client.authentication.k8s.io/v1beta1"
     command     = "gcloud"

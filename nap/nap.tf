@@ -1,5 +1,6 @@
 resource "helm_release" "aws-nginx-plus-ingress" {
   count    = var.CLOUD_PROVIDER == "AWS" ? 1 : 0
+  provider = helm.aws
   name       = format("%s-nap-%s", local.project_prefix, local.build_suffix)
   repository = "https://helm.nginx.com/stable"
   chart      = "nginx-ingress"
@@ -15,6 +16,7 @@ resource "helm_release" "aws-nginx-plus-ingress" {
 
 resource "helm_release" "gcp-nginx-plus-ingress" {
   count    = var.CLOUD_PROVIDER == "GCP" ? 1 : 0
+  provider = helm.gcp
   name       = format("%s-nap-%s", local.project_prefix, local.build_suffix)
   repository = "https://helm.nginx.com/stable"
   chart      = "nginx-ingress"
