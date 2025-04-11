@@ -1,7 +1,7 @@
-variable "CLOUD_PROVIDER" {
-  description = "The cloud provider to use (either AWS/Azure/GCP) set in workflow file"
-  type        = string
-}
+# variable "CLOUD_PROVIDER" {
+#   description = "The cloud provider to use (either AWS/Azure/GCP) set in workflow file"
+#   type        = string
+# }
 
 # NGINX Configuration
 variable "nginx_registry" {
