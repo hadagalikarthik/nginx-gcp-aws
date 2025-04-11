@@ -340,7 +340,8 @@ jobs:
           terraform plan -no-color -input=false -lock=false -out=tfplan \
             -var="workspace_path=${{ env.WORKSPACE_PATH }}" \
             -var="nginx_jwt=${{ secrets.NGINX_JWT }}" \
-            -var="nginx_pwd=none"
+            -var="nginx_pwd=none" \
+            -var="CLOUD_PROVIDER=${{ env.CLOUD_PROVIDER }}"
           terraform show -no-color tfplan > plan.txt
 
       - name: Check Changes
