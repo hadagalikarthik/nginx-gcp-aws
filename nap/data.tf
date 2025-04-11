@@ -27,8 +27,8 @@ data "aws_eks_cluster_auth" "auth" {
 data "kubernetes_service_v1" "aws-nginx-service" {
   count    = var.CLOUD_PROVIDER == "AWS" ? 1 : 0
   metadata {
-    name      = try(format("%s-%s-controller", helm_release.aws-nginx-plus-ingress.name, helm_release.aws-nginx-plus-ingress.chart))
-    namespace = try(helm_release.aws-nginx-plus-ingress.namespace)
+    name      = try(format("%s-%s-controller", helm_release.aws-nginx-plus-ingress[0].name, helm_release.aws-nginx-plus-ingress[0].chart))
+    namespace = try(helm_release.aws-nginx-plus-ingress[0].namespace)
   }
 }
 
@@ -54,7 +54,7 @@ data "terraform_remote_state" "gke" {
 data "kubernetes_service_v1" "gcp-nginx-service" {
   count    = var.CLOUD_PROVIDER == "GCP" ? 1 : 0
   metadata {
-    name      = try(format("%s-%s-controller", helm_release.gcp-nginx-plus-ingress.name, helm_release.gcp-nginx-plus-ingress.chart))
-    namespace = try(helm_release.gcp-nginx-plus-ingress.namespace)
+    name      = try(format("%s-%s-controller", helm_release.gcp-nginx-plus-ingress[0].name, helm_release.gcp-nginx-plus-ingress[0].chart))
+    namespace = try(helm_release.gcp-nginx-plus-ingress[0].namespace)
   }
 }
