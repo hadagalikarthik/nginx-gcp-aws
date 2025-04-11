@@ -1,6 +1,6 @@
-provider "aws" {
-  region = local.aws_region
-}
+# provider "aws" {
+#   region = local.aws_region
+# }
 
 provider "kubernetes" {
   host                   = data.terraform_remote_state.eks[0].outputs.cluster_endpoint
@@ -56,9 +56,9 @@ provider "kubectl" {
   }
 }
 
-provider "google" {
-    region                  = local.region
-}
+# provider "google" {
+#     region                  = local.region
+# }
 
 provider "kubernetes" {
   host                   = local.host

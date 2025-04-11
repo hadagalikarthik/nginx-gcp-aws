@@ -14,7 +14,7 @@ data "terraform_remote_state" "eks" {
   backend = "s3"
   config = {
     bucket =  var.AWS_S3_BUCKET_NAME        # Your S3 bucket name
-    key    = "eks-cluster/terraform.tfstate" # Path to EKS state file
+    key    = "cluster/terraform.tfstate" # Path to EKS state file
     region = var.AWS_REGION                    # AWS region
   }
 }
@@ -47,7 +47,7 @@ data "terraform_remote_state" "gke" {
   backend = "gcs"
   config = {
     bucket =  var.GCP_BUCKET_NAME        # Your S3 bucket name
-    prefix    = "gke/terraform.tfstate" # Path to EKS state file
+    prefix    = "cluster/terraform.tfstate" # Path to EKS state file
   }
 }
 
