@@ -116,10 +116,13 @@ jobs:
         - name: Write backend config
           run: |
             pwd
+            ls
             if [[ "$CLOUD_PROVIDER" == "AWS" ]]; then
-              echo 'terraform { backend "s3" {} }' > backend.tf
+              echo 'terraform { backend "s3" {} }' > AWS/infra/backend.tf
+              ls
             else
-              echo 'terraform { backend "gcs" {} }' > backend.tf
+              echo 'terraform { backend "gcs" {} }' > GCP/infra/backend.tf
+              ls
             fi
 
         - name: Initialize Terraform with GCP Backend
