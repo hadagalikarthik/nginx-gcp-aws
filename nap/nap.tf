@@ -5,7 +5,7 @@ resource "helm_release" "aws-nginx-plus-ingress" {
   repository = "https://helm.nginx.com/stable"
   chart      = "nginx-ingress"
   version    = "2.0.1"
-  namespace  = kubernetes_namespace.aws-nginx-ingress.metadata[0].name
+  namespace  = kubernetes_namespace.aws-nginx-ingress[0].metadata[0].name
   values     = [file("./charts/nginx-app-protect/values.yaml")]
   timeout    = 600
 
@@ -21,7 +21,7 @@ resource "helm_release" "gcp-nginx-plus-ingress" {
   repository = "https://helm.nginx.com/stable"
   chart      = "nginx-ingress"
   version    = "2.0.1"
-  namespace  = kubernetes_namespace.gcp-nginx-ingress.metadata[0].name
+  namespace  = kubernetes_namespace.gcp-nginx-ingress[0].metadata[0].name
   values     = [file("./charts/nginx-app-protect/values.yaml")]
   timeout    = 600
 

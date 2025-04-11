@@ -5,7 +5,7 @@ resource "helm_release" "aws-grafana" {
   repository = "https://grafana.github.io/helm-charts"
   chart = "grafana"
   version = "6.50.7"
-  namespace = kubernetes_namespace.aws-monitoring.metadata[0].name
+  namespace = kubernetes_namespace.aws-monitoring[0].metadata[0].name
   values = [file("./charts/grafana/values.yaml")]
 }
 
@@ -16,6 +16,6 @@ resource "helm_release" "gcp-grafana" {
   repository = "https://grafana.github.io/helm-charts"
   chart = "grafana"
   version = "6.50.7"
-  namespace = kubernetes_namespace.gcp-monitoring.metadata[0].name
+  namespace = kubernetes_namespace.gcp-monitoring[0].metadata[0].name
   values = [file("./charts/grafana/values.yaml")]
 }

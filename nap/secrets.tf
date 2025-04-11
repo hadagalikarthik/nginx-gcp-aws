@@ -3,7 +3,7 @@ resource "kubernetes_secret" "aws-nginx_license" {
   provider = kubernetes.aws
   metadata {
     name      = "license-token"
-    namespace = kubernetes_namespace.aws-nginx-ingress.metadata[0].name
+    namespace = kubernetes_namespace.aws-nginx-ingress[0].metadata[0].name
   }
 
   data = {
@@ -18,7 +18,7 @@ resource "kubernetes_secret" "aws-docker-registry" {
   provider = kubernetes.aws
   metadata {
     name      = "regcred"
-    namespace = kubernetes_namespace.aws-nginx-ingress.metadata[0].name
+    namespace = kubernetes_namespace.aws-nginx-ingress[0].metadata[0].name
   }
 
   type = "kubernetes.io/dockerconfigjson"
@@ -41,7 +41,7 @@ resource "kubernetes_secret" "gcp-nginx_license" {
   provider = kubernetes.gcp
   metadata {
     name      = "license-token"
-    namespace = kubernetes_namespace.gcp-nginx-ingress.metadata[0].name
+    namespace = kubernetes_namespace.gcp-nginx-ingress[0].metadata[0].name
   }
 
   data = {
@@ -56,7 +56,7 @@ resource "kubernetes_secret" "gcp-docker-registry" {
   provider = kubernetes.gcp
   metadata {
     name      = "regcred"
-    namespace = kubernetes_namespace.gcp-nginx-ingress.metadata[0].name
+    namespace = kubernetes_namespace.gcp-nginx-ingress[0].metadata[0].name
   }
 
   type = "kubernetes.io/dockerconfigjson"

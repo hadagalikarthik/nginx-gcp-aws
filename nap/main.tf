@@ -3,7 +3,7 @@ provider "aws" {
 }
 
 provider "kubernetes" {
-  host                   = data.terraform_remote_state.eks.outputs.cluster_endpoint
+  host                   = data.terraform_remote_state.eks[0].outputs.cluster_endpoint
   cluster_ca_certificate = base64decode(data.terraform_remote_state.eks.outputs.kubeconfig-certificate-authority-data)
   token                  = data.aws_eks_cluster_auth.auth.token
   alias                  = "aws"
@@ -14,7 +14,7 @@ provider "kubernetes" {
       "eks",
       "get-token",
       "--cluster-name",
-      data.terraform_remote_state.eks.outputs.cluster_name
+      data.terraform_remote_state.eks[0].outputs.cluster_name
     ]
   }
 }
@@ -22,7 +22,7 @@ provider "kubernetes" {
 provider "helm" {
   alias                  = "aws"
   kubernetes {
-    host                   = data.terraform_remote_state.eks.outputs.cluster_endpoint
+    host                   = data.terraform_remote_state.eks[0].outputs.cluster_endpoint
     cluster_ca_certificate = base64decode(data.terraform_remote_state.eks.outputs.kubeconfig-certificate-authority-data)
     token                  = data.aws_eks_cluster_auth.auth.token
     exec {
@@ -32,7 +32,7 @@ provider "helm" {
         "eks",
         "get-token",
         "--cluster-name",
-        data.terraform_remote_state.eks.outputs.cluster_name
+        data.terraform_remote_state.eks[0].outputs.cluster_name
       ]
     }
   }
@@ -40,7 +40,7 @@ provider "helm" {
 
 provider "kubectl" {
   host                   = data.terraform_remote_state.eks.outputs.cluster_endpoint
-  cluster_ca_certificate = base64decode(data.terraform_remote_state.eks.outputs.kubeconfig-certificate-authority-data)
+  cluster_ca_certificate = base64decode(data.terraform_remote_state.eks[0].outputs.kubeconfig-certificate-authority-data)
   token                  = data.aws_eks_cluster_auth.auth.token
   load_config_file       = false
   alias                  = "aws"
@@ -51,7 +51,7 @@ provider "kubectl" {
       "eks",
       "get-token",
       "--cluster-name",
-      data.terraform_remote_state.eks.outputs.cluster_name
+      data.terraform_remote_state.eks[0].outputs.cluster_name
     ]
   }
 }
