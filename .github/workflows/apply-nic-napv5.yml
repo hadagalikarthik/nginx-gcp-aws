@@ -118,11 +118,19 @@ jobs:
             pwd
             ls
             if [[ "$CLOUD_PROVIDER" == "AWS" ]]; then
-              echo 'terraform { backend "s3" {} }' > AWS/infra/backend.tf
-              ls
-            else
-              echo 'terraform { backend "gcs" {} }' > GCP/infra/backend.tf
-              ls
+              cat <<EOF > AWS/infra/backend.tf
+            terraform {
+              backend "s3" {
+              }
+            }
+            EOF
+            elif [[ "$CLOUD_PROVIDER" == "GCP" ]]; then
+              cat <<EOF > GCP/infra/backend.tf
+            terraform {
+              backend "gcs" {
+              }
+            }
+            EOF
             fi
 
         - name: Initialize Terraform with GCP Backend
