@@ -5,11 +5,9 @@ resource "kubernetes_secret" "aws-nginx_license" {
     name      = "license-token"
     namespace = kubernetes_namespace.aws-nginx-ingress[0].metadata[0].name
   }
-
   data = {
     "license.jwt" = var.nginx_jwt
   }
-
   type = "nginx.com/license"
 }
 
@@ -20,9 +18,7 @@ resource "kubernetes_secret" "aws-docker-registry" {
     name      = "regcred"
     namespace = kubernetes_namespace.aws-nginx-ingress[0].metadata[0].name
   }
-
   type = "kubernetes.io/dockerconfigjson"
-
   data = {
     ".dockerconfigjson" = jsonencode({
       auths = {
@@ -43,11 +39,9 @@ resource "kubernetes_secret" "gcp-nginx_license" {
     name      = "license-token"
     namespace = kubernetes_namespace.gcp-nginx-ingress[0].metadata[0].name
   }
-
   data = {
     "license.jwt" = var.nginx_jwt
   }
-
   type = "nginx.com/license"
 }
 
@@ -58,9 +52,7 @@ resource "kubernetes_secret" "gcp-docker-registry" {
     name      = "regcred"
     namespace = kubernetes_namespace.gcp-nginx-ingress[0].metadata[0].name
   }
-
   type = "kubernetes.io/dockerconfigjson"
-
   data = {
     ".dockerconfigjson" = jsonencode({
       auths = {
