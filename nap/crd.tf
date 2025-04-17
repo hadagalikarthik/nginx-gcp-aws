@@ -100,6 +100,7 @@ spec:
 YAML
 }
 resource "kubectl_manifest" "globalconfigurations_crd" {
+  provider = kubectl.aws
   yaml_body = <<YAML
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -169,6 +170,7 @@ spec:
 YAML
 }
 resource "kubectl_manifest" "policies_crd" {
+  provider = kubectl.aws
   yaml_body = <<YAML
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -425,6 +427,7 @@ YAML
 }
 
 resource "kubectl_manifest" "transportservers_crd" {
+  provider = kubectl.aws
   yaml_body = <<YAML
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -603,6 +606,7 @@ spec:
 YAML
 }
 resource "kubectl_manifest" "virtualserverroute_crd" {
+  provider = kubectl.aws
   yaml_body = <<YAML
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -1335,6 +1339,7 @@ spec:
 YAML
 }
 resource "kubectl_manifest" "virtualserver_crd" {
+  provider = kubectl.aws
   yaml_body = <<YAML
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
