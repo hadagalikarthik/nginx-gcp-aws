@@ -21,11 +21,13 @@ data "terraform_remote_state" "eks" {
 
 data "aws_eks_cluster_auth" "auth" {
   count = var.CLOUD_PROVIDER == "AWS" ? 1 : 0  # Only create this block if CLOUD_PROVIDER is AWS
+  provider = aws.aws
   name = data.terraform_remote_state.eks[0].outputs.cluster_name
 }
 
 data "kubernetes_service_v1" "aws-nginx-service" {
   count    = var.CLOUD_PROVIDER == "AWS" ? 1 : 0
+  provider = kubernetes.aws
   metadata {
     name      = try(format("%s-%s-controller", helm_release.aws-nginx-plus-ingress[0].name, helm_release.aws-nginx-plus-ingress[0].chart))
     namespace = try(helm_release.aws-nginx-plus-ingress[0].namespace)
@@ -53,6 +55,7 @@ data "terraform_remote_state" "gke" {
 
 data "kubernetes_service_v1" "gcp-nginx-service" {
   count    = var.CLOUD_PROVIDER == "GCP" ? 1 : 0
+  provider = kubernetes.gcp
   metadata {
     name      = try(format("%s-%s-controller", helm_release.gcp-nginx-plus-ingress[0].name, helm_release.gcp-nginx-plus-ingress[0].chart))
     namespace = try(helm_release.gcp-nginx-plus-ingress[0].namespace)
