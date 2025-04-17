@@ -384,7 +384,7 @@ jobs:
       - name: Set working directory dynamically
         run: |
           CURRENT_DIR=$(pwd)  # Capture the current working directory
-          FULL_PATH="${CURRENT_DIR}/nap"
+          FULL_PATH="${CURRENT_DIR}/policy"
           echo "Working directory is $FULL_PATH"
           echo "FULL_PATH=$FULL_PATH" >> $GITHUB_ENV
 
@@ -394,14 +394,14 @@ jobs:
       - name: Write backend config
         run: |
           if [[ "$CLOUD_PROVIDER" == "AWS" ]]; then
-            cat <<EOF > nap/backend.tf
+            cat <<EOF > policy/backend.tf
           terraform {
             backend "s3" {
             }
           }
           EOF
           elif [[ "$CLOUD_PROVIDER" == "GCP" ]]; then
-            cat <<EOF > nap/backend.tf
+            cat <<EOF > policy/backend.tf
           terraform {
             backend "gcs" {
             }
