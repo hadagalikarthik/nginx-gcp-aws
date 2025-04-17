@@ -446,14 +446,14 @@ jobs:
         run: |
           terraform init \
             -backend-config="bucket=$TF_VAR_GCP_BUCKET_NAME" \
-            -backend-config="prefix=policy/terraform.tfstate"
+            -backend-config="prefix=cluster/terraform.tfstate"
         working-directory: ./GCP/cluster
 
       - name: Initialize Terraform with AWS Backend
         if: env.CLOUD_PROVIDER == 'AWS'
         run: |
           terraform init \
-            -backend-config="key=policy/terraform.tfstate" \
+            -backend-config="key=cluster/terraform.tfstate" \
             -backend-config="dynamodb_table=terraform-lock-table" \
             -backend-config="encrypt=true" \
             -backend-config="bucket=$TF_VAR_AWS_S3_BUCKET_NAME" \
