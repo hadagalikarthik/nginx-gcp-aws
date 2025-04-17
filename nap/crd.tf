@@ -1,5 +1,5 @@
 resource "kubectl_manifest" "dnsendpoints_crd" {
-  # provider = var.CLOUD_PROVIDER == "AWS" ? kubectl.aws : kubectl.gcp
+  provider = var.CLOUD_PROVIDER == "AWS" ? kubectl.aws : kubectl.gcp
   yaml_body = <<YAML
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
