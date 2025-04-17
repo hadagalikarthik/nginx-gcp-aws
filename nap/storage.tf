@@ -1,5 +1,6 @@
 resource "kubernetes_storage_class_v1" "aws_csi" {
   count    = var.CLOUD_PROVIDER == "AWS" ? 1 : 0
+  provider = kubernetes.aws
   metadata {
     name = "ebs-sc"
     annotations = {
