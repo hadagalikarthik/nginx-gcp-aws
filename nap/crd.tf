@@ -1,5 +1,9 @@
 resource "kubectl_manifest" "dnsendpoints_crd" {
   provider = kubectl.aws
+  # provider = var.CLOUD_PROVIDER == "GCP" ? kubectl.gcp : kubectl.aws
+  # provider = kubectl.${local.kubectl_provider_alias}
+  # for_each = var.CLOUD_PROVIDER != "" ? { var.CLOUD_PROVIDER => local.provider_map[var.CLOUD_PROVIDER] } : {}
+  # provider = each.value  # Dynamically use the selected provider
   yaml_body = <<YAML
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition

@@ -7,6 +7,7 @@ locals {
   cluster_name           = var.CLOUD_PROVIDER == "GCP" ? data.terraform_remote_state.gke[0].outputs.kubernetes_cluster_name : var.CLOUD_PROVIDER == "AWS" ? data.terraform_remote_state.eks[0].outputs.cluster_name : null
   cluster_token          = var.CLOUD_PROVIDER == "GCP" ? data.terraform_remote_state.gke[0].outputs.kubernetes_cluster_access_token : null
   cidr                   = var.CLOUD_PROVIDER == "GCP" ? data.terraform_remote_state.gcp-infra[0].outputs.cidr : null
+  kubectl_provider_alias = var.CLOUD_PROVIDER == "AWS" ? "aws" : "gcp"
 }
 
 locals {
@@ -20,3 +21,10 @@ locals {
   # cluster_ca_certificate  = var.CLOUD_PROVIDER == "AWS" ? data.terraform_remote_state.eks.outputs.kubeconfig-certificate-authority-data : null
   app                     = var.CLOUD_PROVIDER == "AWS" ? format("%s-nap-%s", local.project_prefix, local.build_suffix) : null
 }
+
+# locals {
+#   provider_map = {
+#     "AWS" = kubectl.aws
+#     "GCP" = kubectl.gcp
+#   }
+# }
