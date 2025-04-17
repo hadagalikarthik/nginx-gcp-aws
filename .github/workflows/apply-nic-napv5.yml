@@ -394,52 +394,20 @@ jobs:
       - name: Write backend config
         run: |
           if [[ "$CLOUD_PROVIDER" == "AWS" ]]; then
-            cat <<EOF > policy/backend.tf
+            cat <<EOF > AWS/cluster/backend.tf
           terraform {
             backend "s3" {
             }
           }
           EOF
           elif [[ "$CLOUD_PROVIDER" == "GCP" ]]; then
-            cat <<EOF > policy/backend.tf
+            cat <<EOF > GCP/cluster/backend.tf
           terraform {
             backend "gcs" {
             }
           }
           EOF
           fi
-
-      #    - name: Terraform Init (GKE)
-      #      if: env.CLOUD_PROVIDER == 'GCP'
-      #      run: |
-      #        terraform init \
-      #          -backend-config="bucket=$TF_VAR_GCP_BUCKET_NAME"
-      #      working-directory: ./gcp/cluster
-      #
-      #    - name: Terraform Init (EKS)
-      #      if: env.CLOUD_PROVIDER == 'AWS'
-      #      run: |
-      #        terraform init \
-      #          -backend-config="bucket=${{ env.TF_VAR_AWS_S3_BUCKET_NAME }}" \
-      #          -backend-config="region=${{ env.TF_VAR_AWS_REGION }}"
-      #      working-directory: ./cluster
-
-#      - name: Initialize Terraform with GCP Backend
-#        if: env.CLOUD_PROVIDER == 'GCP'
-#        run: |
-#          terraform init \
-#            -backend-config="bucket=$TF_VAR_GCP_BUCKET_NAME" \
-#            -backend-config="prefix=nap/terraform.tfstate"
-#        working-directory: ./GCP/cluster
-#
-#      - name: Initialize Terraform with AWS Backend
-#        if: env.CLOUD_PROVIDER == 'AWS'
-#        run: |
-#          terraform init \
-#            -backend-config="key=nap/terraform.tfstate" \
-#            -backend-config="dynamodb_table=terraform-lock-table" \
-#            -backend-config="encrypt=true"
-#        working-directory: ./AWS/cluster
 
       - name: Initialize Terraform with GCP Backend
         if: env.CLOUD_PROVIDER == 'GCP'
