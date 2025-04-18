@@ -594,7 +594,8 @@ jobs:
       - name: Terraform Plan
         working-directory: ${{ env.FULL_PATH }}
         run: |
-          terraform plan -no-color -input=false -out=tfplan
+          terraform plan -no-color -input=false -out=tfplan \
+            -var="CLOUD_PROVIDER=${{ env.CLOUD_PROVIDER }}"
           terraform show -no-color tfplan > plan.txt
 
       - name: Check Changes
@@ -690,7 +691,8 @@ jobs:
         working-directory: ${{ env.FULL_PATH }}
         if: github.event_name == 'pull_request' || github.event_name == 'push'
         run: |
-          terraform plan -no-color -input=false -out=tfplan
+          terraform plan -no-color -input=false -out=tfplan \
+            -var="CLOUD_PROVIDER=${{ env.CLOUD_PROVIDER }}"
           terraform show -no-color tfplan > plan.txt
 
       - name: Check Changes
