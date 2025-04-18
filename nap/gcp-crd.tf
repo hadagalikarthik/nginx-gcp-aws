@@ -1,4 +1,4 @@
-resource "kubectl_manifest" "dnsendpoints_crd" {
+resource "kubectl_manifest" "gcp-dnsendpoints_crd" {
   provider = kubectl.gcp
   # provider = var.CLOUD_PROVIDER == "GCP" ? kubectl.gcp : kubectl.aws
   # provider = kubectl.${local.kubectl_provider_alias}
@@ -103,7 +103,7 @@ spec:
       status: {}
 YAML
 }
-resource "kubectl_manifest" "globalconfigurations_crd" {
+resource "kubectl_manifest" "gcp-globalconfigurations_crd" {
   provider = kubectl.gcp
   yaml_body = <<YAML
 apiVersion: apiextensions.k8s.io/v1
@@ -173,7 +173,7 @@ spec:
     storage: true
 YAML
 }
-resource "kubectl_manifest" "policies_crd" {
+resource "kubectl_manifest" "gcp-policies_crd" {
   provider = kubectl.gcp
   yaml_body = <<YAML
 apiVersion: apiextensions.k8s.io/v1
@@ -429,8 +429,7 @@ spec:
       status: {}
 YAML
 }
-
-resource "kubectl_manifest" "transportservers_crd" {
+resource "kubectl_manifest" "gcp-transportservers_crd" {
   provider = kubectl.gcp
   yaml_body = <<YAML
 apiVersion: apiextensions.k8s.io/v1
@@ -609,7 +608,7 @@ spec:
       status: {}
 YAML
 }
-resource "kubectl_manifest" "virtualserverroute_crd" {
+resource "kubectl_manifest" "gcp-virtualserverroute_crd" {
   provider = kubectl.gcp
   yaml_body = <<YAML
 apiVersion: apiextensions.k8s.io/v1
@@ -1342,7 +1341,7 @@ spec:
       status: {}
 YAML
 }
-resource "kubectl_manifest" "virtualserver_crd" {
+resource "kubectl_manifest" "gcp-virtualserver_crd" {
   provider = kubectl.gcp
   yaml_body = <<YAML
 apiVersion: apiextensions.k8s.io/v1
