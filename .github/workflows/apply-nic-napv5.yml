@@ -517,6 +517,10 @@ jobs:
 
       - name: Build Docker Image
         run: |
+          echo "Current Working Directory:"
+          pwd  # Print working directory
+          echo "Files in the Directory:"
+          ls -al  # List all files (including hidden files)
           docker build --no-cache \
             --secret id=nginx-crt,src=/etc/ssl/nginx/nginx-repo.crt \
             --secret id=nginx-key,src=/etc/ssl/nginx/nginx-repo.key \
