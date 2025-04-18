@@ -115,22 +115,22 @@ resource "kubernetes_manifest" "gcp-arcadia_virtualserver" {
       upstreams = [
         {
           name    = "main-upstream"
-          service = kubernetes_service.gcp-main.metadata[0].name
+          service = kubernetes_service.gcp-main[0].metadata[0].name
           port    = 80
         },
         {
           name    = "backend-upstream"
-          service = kubernetes_service.gcp-backend.metadata[0].name
+          service = kubernetes_service.gcp-backend[0].metadata[0].name
           port    = 80
         },
         {
           name    = "app2-upstream"
-          service = kubernetes_service.gcp-app_2.metadata[0].name
+          service = kubernetes_service.gcp-app_2[0].metadata[0].name
           port    = 80
         },
         {
           name    = "app3-upstream"
-          service = kubernetes_service.gcp-app_3.metadata[0].name
+          service = kubernetes_service.gcp-app_3[0].metadata[0].name
           port    = 80
         }
       ]

@@ -99,7 +99,7 @@ resource "kubernetes_manifest" "aws-arcadia_virtualserver" {
     }
     spec = {
       host = local.external_name
-      
+
       # Reference the WAF policy
       policies = [
         {
@@ -111,22 +111,22 @@ resource "kubernetes_manifest" "aws-arcadia_virtualserver" {
       upstreams = [
         {
           name    = "main-upstream"
-          service = kubernetes_service.aws-main.metadata[0].name
+          service = kubernetes_service.aws-main[0].metadata[0].name
           port    = 80
         },
         {
           name    = "backend-upstream"
-          service = kubernetes_service.aws-backend.metadata[0].name
+          service = kubernetes_service.aws-backend[0].metadata[0].name
           port    = 80
         },
         {
           name    = "app2-upstream"
-          service = kubernetes_service.aws-app_2.metadata[0].name
+          service = kubernetes_service.aws-app_2[0].metadata[0].name
           port    = 80
         },
         {
           name    = "app3-upstream"
-          service = kubernetes_service.aws-app_3.metadata[0].name
+          service = kubernetes_service.aws-app_3[0].metadata[0].name
           port    = 80
         }
       ]
