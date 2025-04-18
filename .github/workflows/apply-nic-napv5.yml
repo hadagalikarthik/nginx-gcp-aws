@@ -516,6 +516,7 @@ jobs:
         run: echo "${{ secrets.NGINX_REPO_KEY }}" | sudo tee /etc/ssl/nginx/nginx-repo.key > /dev/null
 
       - name: Build Docker Image
+        working-directory: ${{ env.FULL_PATH }}
         run: |
           echo "Current Working Directory:"
           pwd  # Print working directory
