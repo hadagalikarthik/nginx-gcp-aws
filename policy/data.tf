@@ -31,11 +31,11 @@ data "terraform_remote_state" "aws-nap" {
 }
 
 # Keep existing data sources for Kubernetes
-data "aws_eks_cluster_auth" "auth" {
-  count = var.CLOUD_PROVIDER == "AWS" ? 1 : 0  # Only create this block if CLOUD_PROVIDER is AWS
-  provider = aws.aws
-  name = data.terraform_remote_state.eks[0].outputs.cluster_name
-}
+# data "aws_eks_cluster_auth" "auth" {
+#   count = var.CLOUD_PROVIDER == "AWS" ? 1 : 0  # Only create this block if CLOUD_PROVIDER is AWS
+#   provider = aws.aws
+#   name = data.terraform_remote_state.eks[0].outputs.cluster_name
+# }
 
 data "terraform_remote_state" "gcp-infra" {
   count = var.CLOUD_PROVIDER == "GCP" ? 1 : 0  # Only create this block if CLOUD_PROVIDER is GCP

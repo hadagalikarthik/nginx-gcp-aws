@@ -1,5 +1,5 @@
 provider "google" {
-    region                  = local.region
+    region = local.region
     alias = "gcp"
 }
 
@@ -12,11 +12,10 @@ provider "kubernetes" {
   exec {
     api_version = "client.authentication.k8s.io/v1beta1"
     command     = "gcloud"
-    args = [
-      "container", "clusters", "get-credentials",
-      local.cluster_name,  # Assuming 'local.cluster_name' is set
-      "--region", local.region  # Assuming 'local.cluster_region' is set
-    ]
+    args = concat(
+      ["container", "clusters", "get-credentials", local.cluster_name],
+      local.region != null ? ["--region", local.region] : []
+    )
   }
 }
 
@@ -30,11 +29,10 @@ provider "helm" {
     exec {
       api_version = "client.authentication.k8s.io/v1beta1"
       command     = "gcloud"
-      args = [
-        "container", "clusters", "get-credentials",
-        local.cluster_name,  # Cluster name
-        "--region", local.region  # Cluster region
-      ]
+      args = concat(
+        ["container", "clusters", "get-credentials", local.cluster_name],
+        local.region != null ? ["--region", local.region] : []
+      )
     }
   }
 }
@@ -48,10 +46,9 @@ provider "kubectl" {
     exec {
     api_version = "client.authentication.k8s.io/v1beta1"
     command     = "gcloud"
-    args = [
-      "container", "clusters", "get-credentials",
-      local.cluster_name,  # Cluster name
-      "--region", local.region  # Cluster region
-    ]
+    args = concat(
+      ["container", "clusters", "get-credentials", local.cluster_name],
+      local.region != null ? ["--region", local.region] : []
+    )
   }
 }
