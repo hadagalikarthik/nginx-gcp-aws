@@ -8,7 +8,7 @@ resource "kubernetes_manifest" "arcadia_virtualserver" {
       namespace = "default"
     }
     spec = {
-      host = local.host
+      host = local.external_name
       
       # Reference the WAF policy
       policies = [
