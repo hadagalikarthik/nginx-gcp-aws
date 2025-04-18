@@ -1,27 +1,6 @@
-provider "aws" {
-  alias = "aws"
-  region = local.aws_region
-}
-
-provider "kubernetes" {
-  alias                  = "aws"
-  host                   = local.host
-  cluster_ca_certificate = base64decode(local.cluster_ca_certificate)
-  token                  = data.aws_eks_cluster_auth.auth[0].token
-}
-
-provider "helm" {
-  alias                  = "aws"
-  kubernetes {
-    host  = local.host
-    cluster_ca_certificate = base64decode(local.cluster_ca_certificate)
-    token = data.aws_eks_cluster_auth.auth[0].token
-  }
-}
-
-resource "kubernetes_deployment" "aws-main" {
-  count = var.CLOUD_PROVIDER == "AWS" ? 1 : 0  # Only create this block if CLOUD_PROVIDER is AWS
-  provider = kubernetes.aws
+resource "kubernetes_deployment" "gcp-main" {
+  count = var.CLOUD_PROVIDER == "GCP" ? 1 : 0  # Only create this block if CLOUD_PROVIDER is GCP
+  provider = kubernetes.gcp
   metadata {
     name = "main"
     labels = {
@@ -55,9 +34,9 @@ resource "kubernetes_deployment" "aws-main" {
     }
   }
 }
-resource "kubernetes_deployment" "aws-backend" {
-  count = var.CLOUD_PROVIDER == "AWS" ? 1 : 0  # Only create this block if CLOUD_PROVIDER is AWS
-  provider = kubernetes.aws
+resource "kubernetes_deployment" "gcp-backend" {
+  count = var.CLOUD_PROVIDER == "GCP" ? 1 : 0  # Only create this block if CLOUD_PROVIDER is GCP
+  provider = kubernetes.gcp
   metadata {
     name = "backend"
     labels = {
@@ -91,9 +70,9 @@ resource "kubernetes_deployment" "aws-backend" {
     }
   }
 }
-resource "kubernetes_deployment" "aws-app_2" {
-  count = var.CLOUD_PROVIDER == "AWS" ? 1 : 0  # Only create this block if CLOUD_PROVIDER is AWS
-  provider = kubernetes.aws
+resource "kubernetes_deployment" "gcp-app_2" {
+  count = var.CLOUD_PROVIDER == "GCP" ? 1 : 0  # Only create this block if CLOUD_PROVIDER is GCP
+  provider = kubernetes.gcp
   metadata {
     name = "app2"
     labels = {
@@ -126,9 +105,9 @@ resource "kubernetes_deployment" "aws-app_2" {
     }
   }
 }
-resource "kubernetes_deployment" "aws-app_3" {
-  count = var.CLOUD_PROVIDER == "AWS" ? 1 : 0  # Only create this block if CLOUD_PROVIDER is AWS
-  provider = kubernetes.aws
+resource "kubernetes_deployment" "gcp-app_3" {
+  count = var.CLOUD_PROVIDER == "GCP" ? 1 : 0  # Only create this block if CLOUD_PROVIDER is GCP
+  provider = kubernetes.gcp
   metadata {
     name = "app3"
     labels = {
