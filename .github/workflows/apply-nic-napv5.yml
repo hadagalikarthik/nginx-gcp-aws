@@ -476,7 +476,7 @@ jobs:
       - name: Configure kubectl for GKE
         if: env.CLOUD_PROVIDER == 'GCP'
         run: |
-          gcloud container clusters get-credentials ${{ env.TF_VAR_project_prefix }}-gke --region $GCP_REGION --project $TF_VAR_GCP_PROJECT_ID
+          gcloud container clusters get-credentials $GKE_CLUSTER_NAME --region $GCP_REGION --project $TF_VAR_GCP_PROJECT_ID
 
       - name: Verify kubectl connectivity
         run: kubectl get nodes -n nginx-ingress
