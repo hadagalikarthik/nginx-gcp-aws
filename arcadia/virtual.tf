@@ -1,4 +1,5 @@
 resource "kubernetes_manifest" "arcadia_virtualserver" {
+  provider = kubernetes.aws
   manifest = {
     apiVersion = "k8s.nginx.org/v1"
     kind       = "VirtualServer"
@@ -7,7 +8,7 @@ resource "kubernetes_manifest" "arcadia_virtualserver" {
       namespace = "default"
     }
     spec = {
-      host = try(data.terraform_remote_state.nap.outputs.external_name)
+      host = local.host
       
       # Reference the WAF policy
       policies = [

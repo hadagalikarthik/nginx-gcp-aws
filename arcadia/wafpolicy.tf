@@ -1,4 +1,5 @@
 resource "kubernetes_manifest" "waf_policy" {
+  provider = kubernetes.aws
   manifest = {
     apiVersion = "k8s.nginx.org/v1"
     kind       = "Policy"

@@ -1,4 +1,5 @@
 resource "kubernetes_service" "main" {
+  provider = kubernetes.aws
   metadata {
     name = "main"
     labels = {
@@ -19,6 +20,7 @@ resource "kubernetes_service" "main" {
   }
 }
 resource "kubernetes_service" "backend" {
+  provider = kubernetes.aws
   metadata {
     name = "backend"
     labels = {
@@ -39,6 +41,7 @@ resource "kubernetes_service" "backend" {
   }
 }
 resource "kubernetes_service" "app_2" {
+  provider = kubernetes.aws
   metadata {
     name = "app2"
     labels = {
@@ -59,6 +62,7 @@ resource "kubernetes_service" "app_2" {
   }
 }
 resource "kubernetes_service" "app_3" {
+  provider = kubernetes.aws
   metadata {
     name = "app3"
     labels = {
