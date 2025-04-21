@@ -646,6 +646,7 @@ jobs:
           credentials_json: ${{ secrets.TF_VAR_GOOGLE_CREDENTIALS }}
 
       - name: Set AWS working directory dynamically
+        if: env.CLOUD_PROVIDER == 'AWS'
         run: |
           #export WORKING_DIRECTORY=${{ env.CLOUD_PROVIDER }}/arcadia
           CURRENT_DIR=$(pwd)  # Capture the current working directory
@@ -654,6 +655,7 @@ jobs:
           echo "FULL_PATH=$FULL_PATH" >> $GITHUB_ENV
 
       - name: Set GCP working directory dynamically
+        if: env.CLOUD_PROVIDER == 'GCP'
         run: |
           #export WORKING_DIRECTORY=${{ env.CLOUD_PROVIDER }}/arcadia
           CURRENT_DIR=$(pwd)  # Capture the current working directory
