@@ -287,7 +287,7 @@ jobs:
         with:
           credentials_json: ${{ secrets.TF_VAR_GOOGLE_CREDENTIALS }}
 
-      - name: Set working directory dynamically
+      - name: Set AWS working directory dynamically
         if: env.CLOUD_PROVIDER == 'AWS'
         run: |
           CURRENT_DIR=$(pwd)  # Capture the current working directory
@@ -295,7 +295,7 @@ jobs:
           echo "Working directory is $FULL_PATH"
           echo "FULL_PATH=$FULL_PATH" >> $GITHUB_ENV
 
-      - name: Set working directory dynamically
+      - name: Set GCP working directory dynamically
         if: env.CLOUD_PROVIDER == 'GCP'
         run: |
           CURRENT_DIR=$(pwd)  # Capture the current working directory
@@ -645,11 +645,19 @@ jobs:
         with:
           credentials_json: ${{ secrets.TF_VAR_GOOGLE_CREDENTIALS }}
 
-      - name: Set working directory dynamically
+      - name: Set AWS working directory dynamically
         run: |
           #export WORKING_DIRECTORY=${{ env.CLOUD_PROVIDER }}/arcadia
           CURRENT_DIR=$(pwd)  # Capture the current working directory
-          FULL_PATH="${CURRENT_DIR}/arcadia"
+          FULL_PATH="${CURRENT_DIR}/arcadia/AWS"
+          echo "Working directory is $FULL_PATH"
+          echo "FULL_PATH=$FULL_PATH" >> $GITHUB_ENV
+
+      - name: Set GCP working directory dynamically
+        run: |
+          #export WORKING_DIRECTORY=${{ env.CLOUD_PROVIDER }}/arcadia
+          CURRENT_DIR=$(pwd)  # Capture the current working directory
+          FULL_PATH="${CURRENT_DIR}/arcadia/GCP"
           echo "Working directory is $FULL_PATH"
           echo "FULL_PATH=$FULL_PATH" >> $GITHUB_ENV
 
@@ -659,14 +667,14 @@ jobs:
       - name: Write backend config
         run: |
           if [[ "$CLOUD_PROVIDER" == "AWS" ]]; then
-            cat <<EOF > arcadia/backend.tf
+            cat <<EOF > arcadia/AWS/backend.tf
           terraform {
             backend "s3" {
             }
           }
           EOF
           elif [[ "$CLOUD_PROVIDER" == "GCP" ]]; then
-            cat <<EOF > arcadia/backend.tf
+            cat <<EOF > arcadia/GCP/backend.tf
           terraform {
             backend "gcs" {
             }

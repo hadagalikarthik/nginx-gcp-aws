@@ -61,7 +61,7 @@ resource "helm_release" "gcp-grafana" {
   chart = "grafana"
   version = "6.50.7"
   namespace = kubernetes_namespace.gcp-monitoring[0].metadata[0].name
-  values = [file("./charts/grafana/values.yaml")]
+  values = [file("../charts/grafana/values.yaml")]
 }
 
 resource "helm_release" "gcp-nginx-plus-ingress" {
@@ -72,7 +72,7 @@ resource "helm_release" "gcp-nginx-plus-ingress" {
   chart      = "nginx-ingress"
   version    = "2.0.1"
   namespace  = kubernetes_namespace.gcp-nginx-ingress[0].metadata[0].name
-  values     = [file("./charts/nginx-app-protect/values.yaml")]
+  values     = [file("../charts/nginx-app-protect/values.yaml")]
   timeout    = 600
 
   depends_on = [
@@ -88,7 +88,7 @@ resource "helm_release" "gcp-prometheus" {
     chart = "prometheus"
     #version = "27.3.0"
     namespace = kubernetes_namespace.gcp-monitoring[0].metadata[0].name
-    values = [file("./charts/prometheus/values.yaml")]
+    values = [file("../charts/prometheus/values.yaml")]
 }
 
 resource "kubernetes_namespace" "gcp-nginx-ingress" {
